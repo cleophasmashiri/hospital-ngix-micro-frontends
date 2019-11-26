@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  bookings:
+    container_name: bookings
+    build: bookings
+    networks:
+      - local-network
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+
+  pharmacy:
+    container_name: pharmacy
+    build: pharmacy
+    networks:
+      - local-network
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+
+  gateway:
+    container_name: gateway
+    build: gateway
+    volumes:
+      - ./assets:/var/www
+    ports:
+      - "8888:80"
+    networks:
+      - local-network
+    depends_on:
+      - bookings
+      - pharmacy
+
+networks:
+  local-network:
